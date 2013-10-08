@@ -1,0 +1,27 @@
+{
+  "manifest_version": 2,
+  "name": "EDU Plus",
+  "description": "This extension enhances your EDU experience!",
+  "version": "1.1",
+  "icons": { "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png" },
+  "background": {
+    "persistent": false,
+    "scripts": ["background.js"]
+  },
+  "options_page": "options.html",
+  "update_url": "http://ganjgah.com/eduplus/updates.xml",
+  "permissions": [
+    "https://edu.sharif.edu/"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["*://edu.sharif.edu/*"],
+      "js": ["eduplus.js"]
+    }
+  ],
+  "homepage_url": "http://www.ganjgah.com/eduplus/index.php",
+  "offline_enabled": true,
+  "minimum_chrome_version": "5"  
+}

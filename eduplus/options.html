@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html><head>
+    <title>EDU Plus Extension Options</title>
+    <link rel="stylesheet" type="text/css" href="options.css">
+  </head>
+  <body>
+    <div id="content">
+      <div id="title">
+        <img src="header.png" title="EDU Plus" alt="EDU Plus">
+        <div>Extension Options</div>
+      </div>
+      <form name="options_form" action="">
+        <div class="option_row">
+          <div class="option_name">Things EDU Plus should do:</div>
+          <div class="option_value">
+            <div class="option_value_primary">
+              <input type="checkbox" name="saveid" id="saveidOpt">
+              <label for="saveid">
+                Save latest user ID
+              </label>
+            </div>
+			<div class="option_value_primary">
+			  <input type="checkbox" name="savepass" id="savepassOpt">
+              <label for="savepass">
+                Save latest user password <br/>[* Obviously, this is risky if any other person can access your browser]
+              </label>
+            </div>
+			<div class="option_value_primary">
+			  <input type="checkbox" name="fillcaptcha" id="fillcaptchaOpt">
+              <label for="fillcaptcha">
+                Autofill the login Captcha
+              </label>
+            </div>
+          </div>
+        </div>
+		<div class="message"><div id="status"></div></div>
+      </form>
+    </div>
+    <div class="footer"><a href="http://www.ganjgah.com/eduplus/index.php">EDU Plus Website</a></div>
+</body>
+<script src="options.js"></script>
+</html>
