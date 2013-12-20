@@ -1,42 +1,54 @@
 <!DOCTYPE html>
-<html><head>
-    <title>EDU Plus Extension Options</title>
-    <link rel="stylesheet" type="text/css" href="options.css">
-  </head>
-  <body>
-    <div id="content">
-      <div id="title">
-        <img src="header.png" title="EDU Plus" alt="EDU Plus">
-        <div>Extension Options</div>
-      </div>
-      <form name="options_form" action="">
-        <div class="option_row">
-          <div class="option_name">Things EDU Plus should do:</div>
-          <div class="option_value">
-            <div class="option_value_primary">
-              <input type="checkbox" name="saveid" id="saveidOpt">
-              <label for="saveid">
-                Save latest user ID
-              </label>
-            </div>
-			<div class="option_value_primary">
-			  <input type="checkbox" name="savepass" id="savepassOpt">
-              <label for="savepass">
-                Save latest user password <br/>[* Obviously, this is risky if any other person can access your browser]
-              </label>
-            </div>
-			<div class="option_value_primary">
-			  <input type="checkbox" name="fillcaptcha" id="fillcaptchaOpt">
-              <label for="fillcaptcha">
-                Autofill the login Captcha
-              </label>
-            </div>
-          </div>
+<html>
+<head>
+  <title>EDU Plus Extension Options</title>
+  <link rel="stylesheet" type="text/css" href="options.css">
+</head>
+<body>
+<div id="content">
+  <div id="title">
+    <img src="header.png" title="EDU Plus" alt="EDU Plus">
+    <div>Extension Options</div>
+  </div>
+  <form name="options_form" action="">
+    <div class="option_row">
+      <div class="option_name">Things EDU Plus should do:</div>
+      <div class="option_value">
+        <div class="option_value_primary">
+          <input type="checkbox" name="saveid" id="saveidOpt">
+          <label for="saveid">Save latest user ID</label>
         </div>
-		<div class="message"><div id="status"></div></div>
-      </form>
+        <div class="option_value_primary">
+          <input type="checkbox" name="savepass" id="savepassOpt">
+          <label for="savepass">Save latest user password <br/>[* Obviously, this is risky if any other person can access your browser. <br />Only use if you are the only one using the browser.]</label>
+        </div>
+        <div class="option_value_primary">
+          <input type="checkbox" name="fillcaptcha" id="fillcaptchaOpt">
+          <label for="fillcaptcha">Autofill the login Captcha</label>
+        </div>
+      </div>
     </div>
-    <div class="footer"><a href="http://www.ganjgah.com/eduplus/index.php">EDU Plus Website</a></div>
+    <div class="option_row">
+      <div class="option_name">Other options:</div>
+      <div class="option_value">
+        <div class="option_value_primary">
+          <input type="checkbox" name="focusonblank" id="focusonblankOpt">
+          <label for="focusonblank">Smart Focus</label>
+        </div>
+      </div>
+    </div>
+    <div class="option_row">
+      <div class="option_name">Some statistics: <br/><span class="statsSinceDate" id="statsSinceDate"></span></div>
+      <div class="option_value">
+        <div class="option_value_primary"><span class="stat_name">Usernames automatically filled: </span><span class="stat_value" id="idFills"></span></div>
+        <div class="option_value_primary"><span class="stat_name">Passwords automatically filled: </span><span class="stat_value" id="passFills"></span></div>
+        <div class="option_value_primary"><span class="stat_name">Captchas automatically filled: </span><span class="stat_value" id="captchaFills"></span></div>
+      </div>
+    </div>
+    <div class="message"><div id="status"></div></div>
+  </form>
+</div>
+<div class="footer"><a href="http://www.ganjgah.com/eduplus/index.php">EDU Plus Website</a></div>
 </body>
 <script src="options.js"></script>
 </html>

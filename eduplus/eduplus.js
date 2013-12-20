@@ -1,3 +1,23 @@
+// Load options
+var optionsList = new Array();
+optionsList[0] = "EDU_saveid";
+optionsList[1] = "EDU_savepass";
+optionsList[2] = "EDU_fillcaptcha";
+optionsList[3] = "EDU_focusonblank";
+for  (var i=0; i<4; i++){
+	var opName = optionsList[i];
+	chrome.extension.sendMessage({method: "getLocalStorage", key: opName}, function(response) {
+		if (typeof response === "undefined" || typeof response.data === "undefined")
+			localStorage[response.name] = "false";
+		else
+			localStorage[response.name] = response.data;	
+		//console.log("Value retrieved: "+response.name+" = "+localStorage[response.name]);
+	});
+}
+// Sort out related localstorage vars
+if ( (localStorage["EDU_saveid"] === "false") || (typeof localStorage["EDU_latestid"] === "undefined") ) localStorage["EDU_latestid"] = "";
+if ( (localStorage["EDU_savepass"] === "false") || (typeof localStorage["EDU_latestpass"] === "undefined") ) localStorage["EDU_latestpass"] = "";
+
 doYourThings();
 
 function doYourThings(){	
@@ -10,9 +30,10 @@ function doYourThings(){
 		return;
 	}
 	showEDUPlusNotice();
-	if (shouldSaveID()) restoreID();
-	if (shouldSavePass()) restorePass();
-	if (shouldFillCaptcha()) sortOutCaptcha();
+	if (getOption('shouldSaveID')) restoreID();
+	if (getOption('shouldSavePass')) restorePass();
+	if (getOption('shouldFillCaptcha')) sortOutCaptcha();
+	if (getOption('shouldFocusOnBlankField')) document.getElementsByTagName('body')[0].onload = focusOnBlankField;
 }
 
 
@@ -23,6 +44,16 @@ function showEDUPlusNotice(){
 	notice.style.cssText = "width:365px; text-align:center; font-size: 0.8em; color: black; border-radius:5px; border: 1px solid transparent; border-color: #F0C36D; background-color: #F9EDBE; padding:1px; margin:1px auto; ";
 	badyTag.insertBefore(notice, badyTag.firstChild);
 }
+function focusOnBlankField(){
+	if (!getOption('shouldSaveID') || !localStorage["EDU_latestid"]) document.getElementsByName('username')[0].focus();
+	else if (!getOption('shouldSavePass') || !localStorage["EDU_latestpass"]) document.getElementsByName('password')[0].focus();
+	else if (!getOption('shouldFillCaptcha')) document.getElementById('captcha').focus();
+	else {
+		pageinputs = document.getElementsByTagName('input');
+		for (i=0; i<pageinputs.length; i++)
+			if ((pageinputs[i].type == "image") && (pageinputs[i].src == "https://edu.sharif.edu/images/login_button.gif"))  pageinputs[i].focus();
+	}
+}
 function restoreID(){
 	pageinputs = document.getElementsByTagName('input');
 	for (i=0; i<pageinputs.length; i++)
@@ -31,10 +62,11 @@ function restoreID(){
 		//alert('Could not locate ID input!');
 		setTimeOut(restoreID, 1000);
 	}
-	else {		
+	else {
 		IDInputTag.value = localStorage["EDU_latestid"];
 		IDInputTag.onchange = function(){localStorage["EDU_latestid"] = this.value;};
-	}	
+	}
+	statPlusPlus('idFills');
 }
 
 function restorePass(){
@@ -48,7 +80,8 @@ function restorePass(){
 	else {		
 		PassInputTag.value = localStorage["EDU_latestpass"];
 		PassInputTag.onchange = function(){localStorage["EDU_latestpass"] = this.value;};
-	}	
+	}
+	statPlusPlus('passFills');
 }
 
 function sortOutCaptcha(){
@@ -63,6 +96,7 @@ function sortOutCaptcha(){
 		captchaImageTag.onload = fillInCaptcha;
 		if (captchaImageTag.complete) fillInCaptcha();		
 	}
+	statPlusPlus('captchaFills');
 }
 
 function fillInCaptcha(){
@@ -148,31 +182,15 @@ function truePattern(digit){
 		case 9: return [[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,1,1,1,1,1,1,1,1,0,0,1,1,1,1,0,0,0,0],[0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,0,0,0,0],[0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,0,0,0,0],[0,0,0,0,1,1,1,1,0,0,0,1,1,1,1,0,0,1,1,1,0,0,0,0],[0,0,0,0,1,1,1,0,0,0,0,0,1,1,1,0,0,1,1,1,0,0,0,0],[0,0,0,0,1,1,1,0,0,0,0,0,1,1,1,0,1,1,1,1,0,0,0,0],[0,0,0,0,1,1,1,1,0,0,0,0,1,1,0,1,1,1,1,0,0,0,0,0],[0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0],[0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0],[0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]];
 	}
 }
-function shouldSaveID(){	
-	chrome.extension.sendMessage({method: "getLocalStorage", key: "EDU_saveid"}, function(response) {
-		if (typeof response === "undefined" || typeof response.data === "undefined")
-			localStorage["EDU_saveid"] = "false";
-		else
-			localStorage["EDU_saveid"] = response.data;	});
-	if ( (localStorage["EDU_saveid"] === "false") || (typeof localStorage["EDU_latestid"] === "undefined") ) localStorage["EDU_latestid"] = "";
-	return (localStorage["EDU_saveid"] === "true")?true:false;
+function getOption(optionName){
+	if (optionName == "shouldSaveID") localStorageVarName = 'EDU_saveid';
+	else if (optionName == "shouldSavePass") localStorageVarName = 'EDU_savepass';
+	else if (optionName == "shouldFillCaptcha") localStorageVarName = 'EDU_fillcaptcha';
+	else if (optionName == "shouldFocusOnBlankField") localStorageVarName = 'EDU_focusonblank';
+	else return; // This is not supposed to happen!
+	
+	return (localStorage[localStorageVarName] === "true")?true:false;
 }
-function shouldSavePass(){
-	chrome.extension.sendMessage({method: "getLocalStorage", key: "EDU_savepass"}, function(response) {
-		if (typeof response === "undefined" || typeof response.data === "undefined")
-			localStorage["EDU_savepass"] = "false";
-		else
-			localStorage["EDU_savepass"] = response.data;
-	});
-	if ( (localStorage["EDU_savepass"] === "false") || (typeof localStorage["EDU_latestpass"] === "undefined") ) localStorage["EDU_latestpass"] = "";
-	return (localStorage["EDU_savepass"] === "true")?true:false;
-}
-function shouldFillCaptcha(){
-	chrome.extension.sendMessage({method: "getLocalStorage", key: "EDU_fillcaptcha"}, function(response) {
-		if (typeof response === "undefined" || typeof response.data === "undefined")
-			localStorage["EDU_fillcaptcha"] = "false";
-		else
-			localStorage["EDU_fillcaptcha"] = response.data;
-	});
-	return (localStorage["EDU_fillcaptcha"] === "true")?true:false;
+function statPlusPlus(statName){
+	chrome.extension.sendMessage({method: "statPlusPlus", key: statName}, function(response) {});
 }

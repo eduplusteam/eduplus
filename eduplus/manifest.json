@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "EDU Plus",
   "description": "This extension enhances your EDU experience!",
-  "version": "1.1",
+  "version": "1.2",
   "icons": { "16": "icon16.png",
     "48": "icon48.png",
     "128": "icon128.png" },
@@ -21,7 +21,8 @@
       "js": ["eduplus.js"]
     }
   ],
+  "web_accessible_resources": ["options.html"],
   "homepage_url": "http://www.ganjgah.com/eduplus/index.php",
   "offline_enabled": true,
-  "minimum_chrome_version": "5"  
+  "minimum_chrome_version": "5"
 }
