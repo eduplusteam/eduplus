@@ -22,6 +22,7 @@ EDU plus is an open source Chrome extension designed to faciliate your EDU (edu.
 1. It automatically fills the login Captcha for you
 2. It remembers the last used username so that you don't have to enter your ID everytime
 3. It can remember the last used password so that you don't have to enter your password everytime (NOTE: this is not enabled by default and can be enabled from the extension's options page.)
+4. Smat Focus: It automatically focuses the keyboard on the field that needs to be filled on page load. If user id, password, and captcha are all set to be filled automatically, it focuses on the Login button so you only need to press Enter to login.
  
 
 Will EDU Plus steal my data?
