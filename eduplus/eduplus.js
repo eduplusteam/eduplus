@@ -1,4 +1,4 @@
-// Load options
+// Load options from extension's options page
 var optionsList = new Array();
 optionsList[0] = "EDU_saveid";
 optionsList[1] = "EDU_savepass";
@@ -33,7 +33,12 @@ function doYourThings(){
 	if (getOption('shouldSaveID')) restoreID();
 	if (getOption('shouldSavePass')) restorePass();
 	if (getOption('shouldFillCaptcha')) sortOutCaptcha();
-	if (getOption('shouldFocusOnBlankField')) document.getElementsByTagName('body')[0].onload = focusOnBlankField;
+	//if (getOption('shouldFocusOnBlankField')) document.getElementsByTagName('body')[0].onload = focusOnBlankField;
+	//if (getOption('shouldFocusOnBlankField')) window.onload = focusOnBlankField;
+	if (getOption('shouldFocusOnBlankField')) { 
+		window.addEventListener('load', focusOnBlankField, false); 
+		focusOnBlankField();
+	}
 }
 
 
@@ -183,12 +188,12 @@ function truePattern(digit){
 	}
 }
 function getOption(optionName){
-	if (optionName == "shouldSaveID") localStorageVarName = 'EDU_saveid';
-	else if (optionName == "shouldSavePass") localStorageVarName = 'EDU_savepass';
-	else if (optionName == "shouldFillCaptcha") localStorageVarName = 'EDU_fillcaptcha';
-	else if (optionName == "shouldFocusOnBlankField") localStorageVarName = 'EDU_focusonblank';
+	if (optionName == "shouldSaveID"){localStorageVarName = 'EDU_saveid'; defaultValue = true;}
+	else if (optionName == "shouldSavePass"){localStorageVarName = 'EDU_savepass'; defaultValue = false;}
+	else if (optionName == "shouldFillCaptcha"){localStorageVarName = 'EDU_fillcaptcha'; defaultValue = true;}
+	else if (optionName == "shouldFocusOnBlankField"){localStorageVarName = 'EDU_focusonblank'; defaultValue = true;}
 	else return; // This is not supposed to happen!
-	
+	if (typeof localStorage[localStorageVarName] === "undefined") localStorage[localStorageVarName] = defaultValue;
 	return (localStorage[localStorageVarName] === "true")?true:false;
 }
 function statPlusPlus(statName){
