@@ -24,7 +24,7 @@ function doYourThings(){
 	// Check to see if we are on the Login page
 	pageforms = document.getElementsByTagName('form');
 	for (i=0; i<pageforms.length; i++)
-		if (pageforms[i].method == "post" && pageforms[i].action == "https://edu.sharif.edu/login.do" && pageforms[i].name == "mainform" ) loginFormTag = pageforms[i];
+		if (pageforms[i].method == "post" && (pageforms[i].action.indexOf("://edu.sharif.edu/login.do") != -1) && pageforms[i].name == "mainform" ) loginFormTag = pageforms[i];
 	if (typeof loginFormTag === "undefined") {
 		setTimeOut(doYourThings, 1000);
 		return;
@@ -56,7 +56,7 @@ function focusOnBlankField(){
 	else {
 		pageinputs = document.getElementsByTagName('input');
 		for (i=0; i<pageinputs.length; i++)
-			if ((pageinputs[i].type == "image") && (pageinputs[i].src == "https://edu.sharif.edu/images/login_button.gif"))  pageinputs[i].focus();
+			if ((pageinputs[i].type == "image") && (pageinputs[i].src.indexOf("://edu.sharif.edu/images/login_button.gif") != -1) )  pageinputs[i].focus();
 	}
 }
 function restoreID(){
@@ -92,7 +92,7 @@ function restorePass(){
 function sortOutCaptcha(){
 	imgs = document.getElementsByTagName('img');
 	for (i=0; i<imgs.length; i++)
-		if (imgs[i].src == "https://edu.sharif.edu/jcaptcha.jpg") captchaImageTag = imgs[i];
+		if (imgs[i].src.indexOf("://edu.sharif.edu/jcaptcha.jpg") != -1) captchaImageTag = imgs[i];
 	if (typeof captchaImageTag === "undefined"){
 		//alert('Could not locate Captcha!');
 		setTimeOut(sortOutCaptcha, 1000);
