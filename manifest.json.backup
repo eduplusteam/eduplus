@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "EDU Plus",
   "description": "This extension enhances your EDU experience!",
-  "version": "1.2.3",
+  "version": "1.2.2",
   "icons": { "16": "icon16.png",
     "48": "icon48.png",
     "128": "icon128.png" },
@@ -11,6 +11,7 @@
     "scripts": ["background.js"]
   },
   "options_page": "options.html",
+  "update_url": "http://ganjgah.com/eduplus/updates.xml",
   "permissions": [
     "*://edu.sharif.edu/*"
   ],
